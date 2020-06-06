@@ -13,7 +13,9 @@
     "project": "tsconfig.json",
     "sourceType": "module"
   },
-  "ignorePatterns": "**/*.d.ts",
+  "ignorePatterns": [
+    "**/*.d.ts"
+  ],
   "plugins": [
     "@typescript-eslint"
   ],
@@ -54,5 +56,21 @@
       "error",
       "always"
     ]
-  }
+  },
+  "overrides": [
+    {
+      "env": {
+        "jest/globals": true
+      },
+      "extends": [
+        "plugin:jest/recommended"
+      ],
+      "files": [
+        "test/*.ts"
+      ],
+      "plugins": [
+        "jest"
+      ]
+    }
+  ]
 }

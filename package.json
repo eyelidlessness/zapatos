@@ -17,7 +17,9 @@
     "build": "npm run lint && tsc",
     "preversion": "npm run build",
     "postversion": "npm publish",
-    "postinstall": "node -e 'console.warn(`>>> \\u001b[1;33mZapatos was installed or upgraded. Please (re-)run \\u001b[1;32mnpx zapatos\\u001b[1;33m.\\u001b[0m <<<\\n`)'"
+    "postinstall": "node -e 'console.warn(`>>> \\u001b[1;33mZapatos was installed or upgraded. Please (re-)run \\u001b[1;32mnpx zapatos\\u001b[1;33m.\\u001b[0m <<<\\n`)'",
+    "test": "npm run build && jest",
+    "test-ts": "jest --config ts-jest.config.js"
   },
   "files": [
     "/dist",
@@ -37,12 +39,16 @@
     "@types/pg": ">=7.14.3"
   },
   "devDependencies": {
+    "@types/jest": "^25.2.3",
     "@types/pg": ">=7.14.3",
     "@typescript-eslint/eslint-plugin": "^3.0.2",
     "@typescript-eslint/parser": "^3.0.2",
     "eslint": "^7.1.0",
     "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-jest": "^23.13.2",
+    "jest": "^26.0.1",
     "pg": "^8.2.1",
+    "ts-jest": "^26.1.0",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.3"
   },
