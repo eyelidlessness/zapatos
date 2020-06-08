@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "composite": true,
+    "outDir": "../dist/src",
+    "paths": {
+      "zapatos/schema": [
+        "./generate/pgSchema.ts",
+      ],
+    },
+  },
+}

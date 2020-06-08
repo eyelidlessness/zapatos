@@ -38,7 +38,7 @@ import type {
   ColumnValues,
   ParentColumn,
   DefaultType,
-} from "./src/core";
+} from "zapatos";
 
 `;
 };
@@ -70,9 +70,11 @@ export const tsForConfig = async (config: CompleteConfig) => {
     schemaTables = schemaData.map(r => r.tables),
     allTables = ([] as string[]).concat(...schemaTables),
     ts = header() +
+      `declare module 'zapatos/schema' {\n\n` +
       schemaDefs.join('\n\n') +
       `\n\n/* === cross-table types === */\n` +
-      crossTableTypesForTables(allTables);
+      crossTableTypesForTables(allTables) +
+      '\n\n}';
 
   await pool.end();
   return ts;

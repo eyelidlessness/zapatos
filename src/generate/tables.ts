@@ -4,16 +4,16 @@ Copyright (C) 2020 George MacKerron
 Released under the MIT licence: see LICENCE file
 */
 
-import * as db from '../src';
-import type * as s from '../schema';
+import * as db from '../index';
+import type * as s from './pgSchema';
 import { tsTypeForPgType } from './pgTypes';
 import type { EnumData } from './enums';
 
 
 export const tablesInSchema = async (schemaName: string, pool: db.Queryable): Promise<string[]> => {
   const rows = await db.sql<s.information_schema.columns.SQL>`
-    SELECT ${"table_name"} FROM ${'"information_schema"."columns"'} 
-    WHERE ${{ table_schema: schemaName }} 
+    SELECT ${"table_name"} FROM ${'"information_schema"."columns"'}
+    WHERE ${{ table_schema: schemaName }}
     GROUP BY ${"table_name"} ORDER BY lower(${"table_name"})`.run(pool);
 
   return rows.map(r => r.table_name);
@@ -48,9 +48,9 @@ export const definitionForTableInSchema = async (tableName: string, schemaName: 
 
   const uniqueIndexes = await db.sql<s.pg_indexes.SQL | s.pg_class.SQL | s.pg_index.SQL, { indexname: string }[]>`
     SELECT i.${"indexname"}
-    FROM ${"pg_indexes"} i 
-    JOIN ${"pg_class"} c ON c.${"relname"} = i.${"indexname"} 
-    JOIN ${"pg_index"} idx ON idx.${"indexrelid"} = c.${"oid"} AND idx.${"indisunique"} 
+    FROM ${"pg_indexes"} i
+    JOIN ${"pg_class"} c ON c.${"relname"} = i.${"indexname"}
+    JOIN ${"pg_index"} idx ON idx.${"indexrelid"} = c.${"oid"} AND idx.${"indisunique"}
     WHERE i.${"tablename"} = ${db.param(tableName)}`.run(pool);
 
   return `

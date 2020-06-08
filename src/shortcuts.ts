@@ -20,7 +20,7 @@ import type {
   Whereable,
   Table,
   Column,
-} from '../schema';
+} from 'zapatos/schema';
 
 import {
   AllType,
@@ -78,12 +78,12 @@ export const insert: InsertSignatures = function
 /* === upsert === */
 
 /**
- * Wraps a unique index of the target table for use as the arbiter constraint of an 
+ * Wraps a unique index of the target table for use as the arbiter constraint of an
  * `upsert` shortcut query.
  */
 export class Constraint<T extends Table> { constructor(public value: UniqueIndexForTable<T>) { } }
 /**
- * Returns a `Constraint` instance, wrapping a unique index of the target table for 
+ * Returns a `Constraint` instance, wrapping a unique index of the target table for
  * use as the arbiter constraint of an `upsert` shortcut query.
  */
 export function constraint<T extends Table>(x: UniqueIndexForTable<T>) { return new Constraint<T>(x); }
@@ -102,9 +102,9 @@ interface UpsertSignatures {
  * @param table The table to update or insert into
  * @param values An `Insertable` of values (or an array thereof) to be inserted or updated
  * @param conflictTarget A `UNIQUE` index or `UNIQUE`-indexed column (or array thereof) that determines
- * whether this is an `UPDATE` (when there's a matching existing value) or an `INSERT` 
+ * whether this is an `UPDATE` (when there's a matching existing value) or an `INSERT`
  * (when there isn't)
- * @param noNullUpdateCols Optionally, a column (or array thereof) that should not be 
+ * @param noNullUpdateCols Optionally, a column (or array thereof) that should not be
  * overwritten with `NULL` values during an update
  */
 export const upsert: UpsertSignatures = function
@@ -273,15 +273,15 @@ export interface SelectSignatures {
  * `selectOne`/`count` queries using the `lateral` option.
  * @param table The table to select from
  * @param where A `Whereable` or `SQLFragment` defining the rows to be selected, or `all`
- * @param options Options object. Keys (all optional) are: 
+ * @param options Options object. Keys (all optional) are:
  * * `columns` — an array of column names: only these columns will be returned
- * * `order` – an array of `OrderSpec` objects, such as `{ by: 'column', direction: 'ASC' 
- * }`  
+ * * `order` – an array of `OrderSpec` objects, such as `{ by: 'column', direction: 'ASC'
+ * }`
  * * `limit` and `offset` – numbers: apply this limit and offset to the query
- * * `lateral` — an object mapping key(s) to nested `select`/`selectOne`/`count` queries 
+ * * `lateral` — an object mapping key(s) to nested `select`/`selectOne`/`count` queries
  * to be `LATERAL JOIN`ed
  * * `alias` — table alias (string): required if using `lateral` to join a table to itself
- * * `extras` — an object mapping key(s) to `SQLFragment`s, so that derived 
+ * * `extras` — an object mapping key(s) to `SQLFragment`s, so that derived
  * quantities can be included in the JSON result
  * @param mode Used internally by `selectOne` and `count`
  */
@@ -353,8 +353,8 @@ export interface SelectOneSignatures {
 }
 
 /**
- * Generate a `SELECT` query `SQLFragment` that returns only a single result (or 
- * undefined). A `LIMIT 1` clause is added automatically. This can be nested with other 
+ * Generate a `SELECT` query `SQLFragment` that returns only a single result (or
+ * undefined). A `LIMIT 1` clause is added automatically. This can be nested with other
  * `select`/`selectOne`/`count` queries using the `lateral` option.
  * @param table The table to select from
  * @param where A `Whereable` or `SQLFragment` defining the rows to be selected, or `all`
@@ -365,8 +365,8 @@ export const selectOne: SelectOneSignatures = function (
   where: any,
   options: any = {},
 ) {
-  // you might argue that 'selectOne' offers little that you can't get with destructuring assignment 
-  // and plain 'select' -- e.g. let [x] = async select(...).run(pool); -- but a thing that is definitely worth 
+  // you might argue that 'selectOne' offers little that you can't get with destructuring assignment
+  // and plain 'select' -- e.g. let [x] = async select(...).run(pool); -- but a thing that is definitely worth
   // having is '| undefined' in the return signature, because the result of indexing never includes undefined
   // (see e.g. https://github.com/Microsoft/TypeScript/issues/13778)
 
@@ -385,7 +385,7 @@ export interface CountSignatures {
 }
 
 /**
- * Generate a `SELECT` query `SQLFragment` that returns a count. This can be nested in 
+ * Generate a `SELECT` query `SQLFragment` that returns a count. This can be nested in
  * other `select`/`selectOne` queries using their `lateral` option.
  * @param table The table to count from
  * @param where A `Whereable` or `SQLFragment` defining the rows to be counted, or `all`

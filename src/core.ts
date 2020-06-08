@@ -13,7 +13,7 @@ import type {
   Whereable,
   Table,
   Column,
-} from '../schema';
+} from 'zapatos/schema';
 
 import { getConfig } from './config';
 
@@ -48,13 +48,13 @@ export type JSONArray = JSONValue[];
 export type DateString = string;
 
 /**
- * Compiles to a numbered query parameter (`$1`, `$2`, etc) and adds the wrapped value 
- * at the appropriate position of the values array passed to pg  
+ * Compiles to a numbered query parameter (`$1`, `$2`, etc) and adds the wrapped value
+ * at the appropriate position of the values array passed to pg
  */
 export class Parameter { constructor(public value: any) { } }
 /**
- * Returns a `Parameter` instance, which compiles to a numbered query parameter (`$1`, 
- * `$2`, etc) and adds its wrapped value at the appropriate position of the values array 
+ * Returns a `Parameter` instance, which compiles to a numbered query parameter (`$1`,
+ * `$2`, etc) and adds its wrapped value at the appropriate position of the values array
  * passed to pg
  */
 export function param(x: any) { return new Parameter(x); }
@@ -70,28 +70,28 @@ export class DangerousRawString { constructor(public value: string) { } }
 export function raw(x: string) { return new DangerousRawString(x); }
 
 /**
- * Returns a `ColumnNames` instance, wrapping either an array or object. `ColumnNames` 
- * compiles to a quoted, comma-separated list of array values (for use in a `SELECT` 
- * query) or object keys (for use in an `INSERT`, `UDPATE` or `UPSERT` query, alongside 
+ * Returns a `ColumnNames` instance, wrapping either an array or object. `ColumnNames`
+ * compiles to a quoted, comma-separated list of array values (for use in a `SELECT`
+ * query) or object keys (for use in an `INSERT`, `UDPATE` or `UPSERT` query, alongside
  * `ColumnValues`).
  */
 export class ColumnNames<T> { constructor(public value: T) { } }
 /**
- * Returns a `ColumnNames` instance, wrapping either an array or an object. `ColumnNames` 
- * compiles to a quoted, comma-separated list of array values (for use in a `SELECT` 
- * query) or object keys (for use in an `INSERT`, `UDPATE` or `UPSERT` query alongside 
+ * Returns a `ColumnNames` instance, wrapping either an array or an object. `ColumnNames`
+ * compiles to a quoted, comma-separated list of array values (for use in a `SELECT`
+ * query) or object keys (for use in an `INSERT`, `UDPATE` or `UPSERT` query alongside
  * a `ColumnValues`).
  */
 export function cols<T>(x: T) { return new ColumnNames<T>(x); }
 
 /**
- * Compiles to a quoted, comma-separated list of object keys for use in an `INSERT`, 
+ * Compiles to a quoted, comma-separated list of object keys for use in an `INSERT`,
  * `UPDATE` or `UPSERT` query, alongside `ColumnNames`.
  */
 export class ColumnValues<T> { constructor(public value: T) { } }
 /**
- * Returns a ColumnValues instance, wrapping an object. ColumnValues compiles to a 
- * quoted, comma-separated list of object keys for use in an INSERT, UPDATE or UPSERT 
+ * Returns a ColumnValues instance, wrapping an object. ColumnValues compiles to a
+ * quoted, comma-separated list of object keys for use in an INSERT, UPDATE or UPSERT
  * query alongside a `ColumnNames`.
  */
 export function vals<T>(x: T) { return new ColumnValues<T>(x); }
@@ -102,7 +102,7 @@ export function vals<T>(x: T) { return new ColumnValues<T>(x); }
  */
 export class ParentColumn { constructor(public value: Column) { } }
 /**
- * Returns a `ParentColumn` instance, wrapping a column name, which compiles to that 
+ * Returns a `ParentColumn` instance, wrapping a column name, which compiles to that
  * column name of the table of the parent query.
  */
 export function parent(x: Column) { return new ParentColumn(x); }
@@ -122,9 +122,9 @@ interface SQLQuery {
 }
 
 /**
- * Tagged template function returning a `SQLFragment`. The first generic type argument 
- * defines what interpolated value types are allowed. The second defines what type the 
- * `SQLFragment` produces, where relevant (i.e. when calling `.run(...)` on it, or using 
+ * Tagged template function returning a `SQLFragment`. The first generic type argument
+ * defines what interpolated value types are allowed. The second defines what type the
+ * `SQLFragment` produces, where relevant (i.e. when calling `.run(...)` on it, or using
  * it as the value of an `extras` object).
  */
 export function sql<
@@ -138,9 +138,9 @@ export function sql<
 export class SQLFragment<RunResult = pg.QueryResult['rows']> {
 
   /**
-   * When calling `run`, this function is applied to the object returned by `pg` to 
+   * When calling `run`, this function is applied to the object returned by `pg` to
    * produce the result that is returned. By default, the `rows` array is returned — i.e.
-   * `(qr) => qr.rows` — but some shortcut functions alter this in order to match their 
+   * `(qr) => qr.rows` — but some shortcut functions alter this in order to match their
    * declared `RunResult` type.
    */
   runResultTransform: (qr: pg.QueryResult) => any = qr => qr.rows;
@@ -150,7 +150,7 @@ export class SQLFragment<RunResult = pg.QueryResult['rows']> {
   constructor(private literals: string[], private expressions: SQLExpression[]) { }
 
   /**
-   * Compile and run this query using the provided database connection. What's returned 
+   * Compile and run this query using the provided database connection. What's returned
    * is piped via `runResultTransform` before being returned.
    * @param queryable A database client or pool
    */
@@ -169,8 +169,8 @@ export class SQLFragment<RunResult = pg.QueryResult['rows']> {
   };
 
   /**
-   * Compile this query, returning a `{ text: string, values: any[] }` object that could 
-   * be passed to the `pg` query function. Arguments are generally only passed when the 
+   * Compile this query, returning a `{ text: string, values: any[] }` object that could
+   * be passed to the `pg` query function. Arguments are generally only passed when the
    * function calls itself recursively.
    */
   compile = (result: SQLQuery = { text: '', values: [] }, parentTable?: string, currentColumn?: Column) => {

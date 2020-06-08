@@ -8,18 +8,19 @@
     "url": "https://github.com/jawj/zapatos"
   },
   "prepublish": "tsc",
-  "main": "dist/generate",
+  "main": "dist/src/generate",
   "bin": {
-    "zapatos": "dist/generate-schema.js"
+    "zapatos": "dist/src/generate-schema.js"
   },
   "scripts": {
     "lint": "eslint --ext .ts .",
-    "build": "npm run lint && tsc",
+    "build": "npm run lint && tsc --build src",
+    "build-test": "npm run build && tsc --build test",
     "preversion": "npm run build",
     "postversion": "npm publish",
     "postinstall": "node -e 'console.warn(`>>> \\u001b[1;33mZapatos was installed or upgraded. Please (re-)run \\u001b[1;32mnpx zapatos\\u001b[1;33m.\\u001b[0m <<<\\n`)'",
-    "test": "npm run build && jest",
-    "test-ts": "jest --config ts-jest.config.js"
+    "test": "npm run build-test && jest",
+    "test-ts": "jest --config jest.ts-jest.config.js"
   },
   "files": [
     "/dist",
@@ -50,6 +51,7 @@
     "pg": "^8.2.1",
     "ts-jest": "^26.1.0",
     "ts-node": "^8.10.2",
+    "tsconfig-paths": "^3.9.0",
     "typescript": "^3.9.3"
   },
   "dependencies": {}

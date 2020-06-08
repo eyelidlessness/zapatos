@@ -1,0 +1,18 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "declaration": false,
+    "outDir": "../dist/test",
+    "paths": {
+      "zapatos": [
+        "../src/index.ts",
+      ],
+    },
+  },
+  "references": [
+    {
+      "path": "../src",
+    },
+  ],
+}

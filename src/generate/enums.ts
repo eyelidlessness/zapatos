@@ -4,8 +4,8 @@ Copyright (C) 2020 George MacKerron
 Released under the MIT licence: see LICENCE file
 */
 
-import * as db from '../src';
-import type * as s from '../schema';
+import * as db from '../index';
+import type * as s from './pgSchema';
 
 
 export type EnumData = { [k: string]: string[] };

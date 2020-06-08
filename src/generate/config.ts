@@ -37,8 +37,8 @@ const defaultConfig: OptionalConfig = {
 };
 
 export const moduleRoot = () => {
-  // __dirname could be either ./generate (ts) or ./dist/generate (js)
-  const parentDir = path.join(__dirname, '..');
+  // __dirname could be either ./src/generate (ts) or ./dist/src/generate (js)
+  const parentDir = path.join(__dirname, '../..');
   return fs.existsSync(path.join(parentDir, 'package.json')) ?
     parentDir :
     path.join(parentDir, '..');
